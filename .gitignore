@@ -1,0 +1,15 @@
+# Rendered artifacts (this skill produces these when run in-place)
+*.mp4
+*.mov
+frames/
+titles/
+captions/
+*-rough-cut.mp4
+*-story-*.mp4
+*-final*.mp4
+.facecam_*.png
+
+# OS / editor
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,26 @@
+{
+  "skill_name": "video-social-edit",
+  "evals": [
+    {
+      "id": 0,
+      "name": "story-9x16-with-overlays",
+      "prompt": "I've got a screen recording of a product demo at test-recording.mp4 — it's 1920x1080, the left side (roughly x=10 to x=950) is a web browser and the right side (x=970 onward) is a chat/agent panel. Cut it down into a punchy ~15 second vertical clip for Instagram Stories (9:16), focusing on the browser side, and put a couple of text overlays on it. Give me the final mp4.",
+      "expected_output": "A 1080x1920 mp4, cut shorter than the source, cropped to the browser panel (not stretched), with legible text overlay(s) burned in. Overlays generated as PNGs via Pillow (this ffmpeg lacks drawtext).",
+      "files": ["test-recording.mp4"]
+    },
+    {
+      "id": 1,
+      "name": "square-linkedin-clip",
+      "prompt": "Turn test-recording.mp4 (a 1920x1080 two-panel screen recording — browser on the left, agent chat on the right) into a square 1:1 clip I can post on LinkedIn. Keep it short, maybe speed up any slow parts, and add a title overlay at the top. Output the final video file.",
+      "expected_output": "A 1080x1080 mp4, shorter than 30s, with a centered crop (not squished), and a title overlay rendered via Pillow. Correct aspect ratio, even dimensions, H.264.",
+      "files": ["test-recording.mp4"]
+    },
+    {
+      "id": 2,
+      "name": "vo-script-plus-shotlist",
+      "prompt": "I want to make a TikTok out of test-recording.mp4 — it's a screen recording, 1920x1080, browser on the left and an AI agent chat on the right. Before you render anything, write me a shot list and a voice-over script for a ~20 second vertical video. I'll approve it before you do the actual editing.",
+      "expected_output": "A markdown shot list table with per-segment timing/focus/overlay/VO columns, plus a clean standalone voice-over script (one line per segment, present tense). Should NOT render video yet — stops for approval.",
+      "files": ["test-recording.mp4"]
+    }
+  ]
+}
