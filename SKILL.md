@@ -58,6 +58,33 @@ Read these frames visually before writing the shot list.
 
 ---
 
+## Phase 0.5 — Listen (optional, gated)
+
+Most screen recordings are silent, but some are **narrated live**. When the source carries
+real audio, use it to seed a smarter shot list. Full details, output shapes, and setup are in
+`references/listening.md` — read it if this phase applies.
+
+**Always gate first:**
+
+```bash
+scripts/detect_silence.sh --video source.mov
+```
+
+If it returns `"has_audio": false` (no track, or effectively silent — the x402 demos measured
+~−91 dB), skip this phase entirely and go to the shot list. Only continue when `has_audio` is true.
+
+When there IS audio:
+- **Tier 1 (no extra deps)** — the same command emits a `segments` list with `keep` / `cut` /
+  `speedup` hints from silence detection. Use these to pre-fill the shot list's cut points.
+- **Tier 2 (optional whisper.cpp)** — `scripts/transcribe.sh --video source.mov --out-prefix demo-transcript`
+  emits a timestamped transcript. Read it to place segment boundaries where the narration
+  shifts topic and to pull the **Voice-over** column from what was actually said. No-ops
+  cleanly if whisper.cpp/model isn't installed, so Tier 1 always carries the phase.
+
+These are suggestions that make Phase 1 smarter — you still decide final cuts against the visuals.
+
+---
+
 ## Phase 1 — Shot List
 
 Write a markdown table saved alongside the source video, e.g. `my-video-shotlist.md`.

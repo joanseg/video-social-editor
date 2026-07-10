@@ -20,6 +20,7 @@ usually cost you an afternoon are already encoded.
 ## ✨ What it does
 
 - **Cuts the boring parts** — a shot‑list phase where you decide what stays, what speeds up (1.5× walking pace, 8× montages), and what gets dropped.
+- **Listens when it should** — if the recording is narrated live, it detects dead air to suggest cuts and (optionally, via [whisper.cpp](https://github.com/ggerganov/whisper.cpp)) transcribes the audio to seed the shot list from what was actually said. Silent recordings skip this automatically.
 - **Reframes to any social format** — 9:16 (Stories / Reels / Shorts / TikTok), 1:1 (feed), 4:5 (portrait), 16:9 (YouTube / X). Hard crops, blurred backdrops, zooms, and smooth animated pans between panels.
 - **Burns in text overlays** — dark/light pill, bottom bar, or brand‑accent styles, rendered as crisp PNGs (works even on ffmpeg builds without `drawtext`).
 - **Adds voice‑over + facecam** — you record face + voice in one QuickTime take against the finished cut; the skill overlays a circular face bubble and muxes your narration.
@@ -36,11 +37,12 @@ Say something like:
 Claude walks the pipeline with you, pausing at each phase so you can steer:
 
 1. **Probe & interview** — reads the source, asks target format + what's on screen.
-2. **Shot list** — a reviewable table of cuts, speeds, focus, overlay text, and voice‑over.
-3. **Rough cut** — a fast landscape preview so you can fix pacing *before* the expensive reframe.
-4. **Reframe** — crops/pans to your target aspect ratio.
-5. **Text overlays** — final render with burned‑in titles.
-6. **Voice‑over, facecam & captions** *(optional)* — record narration, get a face bubble + captions.
+2. **Listen** *(optional, auto‑gated)* — if the recording has real audio, detect silences for cut suggestions and optionally transcribe it to seed the shot list.
+3. **Shot list** — a reviewable table of cuts, speeds, focus, overlay text, and voice‑over.
+4. **Rough cut** — a fast landscape preview so you can fix pacing *before* the expensive reframe.
+5. **Reframe** — crops/pans to your target aspect ratio.
+6. **Text overlays** — final render with burned‑in titles.
+7. **Voice‑over, facecam & captions** *(optional)* — record narration, get a face bubble + captions.
 
 Other things you can ask:
 
@@ -88,8 +90,11 @@ video-social-edit/
 │   ├── social-formats.md         # format specs + per-platform durations
 │   ├── crop-geometry.md          # hard crop, blurred backdrop, zoom, animated pan math
 │   ├── overlay-styles.md         # title style presets + the 2-line rule
-│   └── voiceover-facecam.md      # QuickTime recording steps, bubble/caption layout
+│   ├── voiceover-facecam.md      # QuickTime recording steps, bubble/caption layout
+│   └── listening.md              # silence gate, silence detection, whisper.cpp transcription
 ├── scripts/
+│   ├── detect_silence.sh         # Tier 1 — audio gate + silence-based cut suggestions
+│   ├── transcribe.sh             # Tier 2 — whisper.cpp transcript (no-ops if not installed)
 │   ├── generate_titles.py        # title-card PNGs (4 styles, adaptive sizing)
 │   ├── generate_captions.py      # bottom caption PNGs from VO lines
 │   ├── make_circle_mask.py       # circular alpha mask + ring for the facecam bubble
